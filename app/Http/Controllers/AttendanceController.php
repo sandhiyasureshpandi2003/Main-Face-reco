@@ -22,8 +22,7 @@ class AttendanceController extends Controller
     {
         if (Auth::check()) {
             $user = Auth::user();
-            $attendanceRecords = Attendance::where('student_id', $user->reg_no)
-                                            ->orderBy('date_of_attendance', 'desc')
+            $attendanceRecords = Attendance::orderBy('date_of_attendance', 'desc')
                                             ->get();
             return view('attendance_history', compact('user', 'attendanceRecords'));
         } else {

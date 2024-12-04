@@ -34,7 +34,11 @@
     <!-- Sidenav -->
     <div class="sidenav">
         <div class="profile">
+            @if(empty($user->profile_picture))
+            <img src="{{ asset('images/logo.png') }}" alt="Profile Picture" width="100" height="100">
+            @else
             <img src="{{ Storage::url($user->profile_picture) }}" alt="Profile Picture" width="100" height="100">
+            @endif
 
             <div class="name">
                 {{$user->username}}

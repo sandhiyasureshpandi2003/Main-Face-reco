@@ -88,7 +88,7 @@ class AdminController extends Controller
                     'reg_no' =>$reg_no,
                     'face_id' => $faceId
                     ]);
-                return back()->with('success', 'Student are exists , data updated successfully!');
+                return back()->with('success', 'Student exists , data updated successfully!');
             }
         }
         return back()->with('error', 'Failed to detect face');

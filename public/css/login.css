@@ -246,3 +246,11 @@ a:hover {
   margin-bottom: 15px;
   font-size: 20px;
 }
+.right-image{
+  position: absolute;
+  top: 0; /* You can adjust this value depending on where you want the image vertically */
+  right: 0; /* This makes the image stick to the right side */
+  width: 50%; /* Adjust width as needed */
+  height: 100%; /* Keeps aspect ratio */
+  
+}

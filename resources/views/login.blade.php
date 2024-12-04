@@ -6,6 +6,7 @@
 <body>
     <div id="gradient-bg">
         <div class="gradient-container">
+            <center><h1 class="title">Face Recognition Attendance Management system</h1></center>
             <div class="gradient1"></div>
             <div class="gradient2"></div>
             <div class="gradient3"></div>
@@ -13,8 +14,8 @@
             <div class="gradient5"></div>
         </div>
     </div>
-
     <div id="form-container">
+        
         <h1 class="title">Sign in</h1>
         
         @if ($errors->any())

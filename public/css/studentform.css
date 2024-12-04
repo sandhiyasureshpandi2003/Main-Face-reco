@@ -1,4 +1,6 @@
 /* General Reset */
+@import url(https://fonts.googleapis.com/css?family=Dancing+Script);
+
 * {
     margin: 0;
     padding: 0;
@@ -8,7 +10,7 @@
 /* Body */
 body {
     background-color: #e8f5ff;
-    font-family: Arial, sans-serif;
+    font-family: Arial;
     overflow: hidden;
 }
 
@@ -26,7 +28,9 @@ body {
 
 .title {
     font-family: 'Dancing Script', cursive;
-    font-size: 24px;
+    padding-top: 15px;
+    position: absolute;
+    left: 45%;
 }
 
 .navbar-top ul {

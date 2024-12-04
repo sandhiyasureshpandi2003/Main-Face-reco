@@ -10,7 +10,9 @@ class HomeController extends Controller
     public function index(){
         if (Auth::check()) {            
             $user = auth()->user();
-            return view('home', compact('user'));
+          return view('home', compact('user'));
+           //return view('testhome', compact('user'));
+
         }
     }
     public function user_profile(){

@@ -11,6 +11,7 @@
   min-height: 100vh;
   /*background: url("https://images.unsplash.com/photo-1598112152963-535bfc3596f4?crop=entropy&cs=srgb&fm=jpg&ixid=M3wzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE3MjExMjkyMjN8&ixlib=rb-4.0.3&q=85")
     no-repeat center */
+  background: url("{{ asset('images/face-image.jpg') }}") no-repeat center;
   background-size: cover;
   position: relative;
 }

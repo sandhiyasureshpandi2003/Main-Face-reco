@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\StudentReportMail;
 use App\Models\Attendance;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
@@ -9,6 +10,7 @@ use GuzzleHttp\Client;
 use App\Models\Student;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class StudentController extends Controller
@@ -17,7 +19,7 @@ class StudentController extends Controller
     public function index(){
 
     }
-    //match face and mark attendance
+   
     public function matchFace($faceToken1, $faceToken2)
     {
         $client = new Client();
@@ -65,7 +67,13 @@ class StudentController extends Controller
         if (!$image->isValid()) {
             return back()->with('error', 'Invalid image');
         }
+        $alreadyMarked = Attendance::where('student_id', $reg_no)
+                ->whereDate('date_of_attendance', now()->toDateString())
+                ->exists();
 
+        if ($alreadyMarked) {
+            return back()->with('error', 'You have already marked your attendance for today.');
+        }
         $response = $client->post('https://api-us.faceplusplus.com/facepp/v3/detect', [
             'multipart' => [
                 [
@@ -117,5 +125,49 @@ class StudentController extends Controller
         }
         return back()->with('error', 'Failed to detect face');
     }
+    public function student_report(Request $request)
+    {
+        
+        $attendances = Attendance::query();
+    
+        if ($request->filled('date')) {
+            $attendances->whereDate('created_at', $request->input('date'));
+        }
+    
+        if ($request->filled('status')) {
+            $attendances->where('attendance', $request->input('status'));
+        }
+    
+        $attendances = $attendances->orderBy('created_at', 'desc')->get();
+    
+        // Return the view with the attendances
+        return view('student-report', compact('attendances'));
+    }
+
+    public function sendSelectedEmails(Request $request)
+    {
+        // Get the selected student IDs from the request
+        $studentIds = $request->input('student_ids');
+
+        if (!$studentIds) {
+            return redirect()->back()->with('error', 'No students selected.');
+        }
+
+        // Retrieve the students' emails based on the selected IDs
+        $students = Student::whereIn('reg_no', $studentIds)->get();
+
+        foreach ($students as $student) {
+            // Prepare the data for the email
+            $emailData = [
+                'student_name' => $student->name,
+            ];
+
+            // Send the email to the student's email address
+            Mail::to($student->email)->send(new StudentReportMail($emailData));
+        }
+
+        return redirect()->back()->with('success', 'Emails sent successfully!');
+    }
+    
 }
 

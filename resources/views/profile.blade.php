@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
 </head>
 <body>
+    
     <!-- Navbar top -->
     <div class="navbar-top">
         <div class="title">
@@ -22,11 +23,15 @@
 
         <!-- Navbar -->
         <ul>
-            <li>
-                <a href="#sign-out">
-                    <i class="fa fa-sign-out-alt fa-2x"></i>
+            <li class="nav-list">
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <i class="fas fa-sign-out-alt fa-2x"></i>
                 </a>
             </li>
+            
         </ul>
         <!-- End -->
     </div>
@@ -35,8 +40,11 @@
     <!-- Sidenav -->
     <div class="sidenav">
         <div class="profile">
+            @if(empty($user->profile_picture))
+            <img src="{{ asset('images/logo.png') }}" alt="Profile Picture" width="100" height="100">
+            @else
             <img src="{{ Storage::url($user->profile_picture) }}" alt="Profile Picture" width="100" height="100">
-
+            @endif
             <div class="name">
                 {{$user->username}}
             </div>
@@ -56,6 +64,18 @@
                 <table>
                     <tbody>
                         <tr>
+                            <td>Role</td>
+                            <td>:</td>
+                            @if($user->hasRole('student'))
+                            <td>Student</td>
+                            @elseif($user->hasRole('teacher'))
+                            <td>Teacher</td>
+                            @else
+                            <td>Admin</td>
+                            @endif
+                            
+                        </tr>
+                        <tr>
                             <td>Name</td>
                             <td>:</td>
                             <td>{{$user->username}}</td>
@@ -65,6 +85,7 @@
                             <td>:</td>
                             <td>{{$user->email}}</td>
                         </tr>
+                        @if($user->hasRole('student'))
                         <tr>
                             <td>Class</td>
                             <td>:</td>
@@ -75,6 +96,7 @@
                             <td>:</td>
                             <td>{{$user->reg_no}}</td>
                         </tr>
+                        @endif
                         <tr>
                             <td>Phone Number</td>
                             <td>:</td>
